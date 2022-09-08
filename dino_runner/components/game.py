@@ -1,9 +1,10 @@
 import pygame
 from turtle import Screen
+from dino_runner.components.player_lives.player_heart_manager import Player_Heart_Manager
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstaculomanager import Obstacle_manager
-
+from dino_runner.components import text_utils
 class Game:
     def __init__(self):
         pygame.init()
@@ -17,6 +18,8 @@ class Game:
         self.y_pos_bg = 380
         self.player = Dinosaur()
         self.obstacle_manager = Obstacle_manager()
+        self.player_heart_manager = Player_Heart_Manager()
+        self.points = 0
 
     def run(self):
         # Game loop: events - update - draw
@@ -43,6 +46,9 @@ class Game:
         self.draw_background()
         self.player.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
+        self.player_heart_manager.draw(self.screen)
+        self.score()
+
         pygame.display.update()
         pygame.display.flip()
 
@@ -54,3 +60,9 @@ class Game:
             self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed
+
+    def score(self):
+        self.points += 1
+        self.game_speed += 0.01
+        score, score_rect = text_utils.get_score_element(self.points)
+        self.screen.blit(score, score_rect)    
