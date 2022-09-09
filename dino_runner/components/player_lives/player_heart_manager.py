@@ -1,4 +1,3 @@
-from re import X
 from dino_runner.components.player_lives.heart import Heart
 
 class Player_Heart_Manager:
@@ -8,6 +7,9 @@ class Player_Heart_Manager:
     def reduce_heart_count(self):
         self.heart_count -= 1    
 
+    def increase_heart_count(self):
+        self.heart_count += 1    
+
     def draw(self, screen):
         x_position = 10
         y_position = 20
@@ -15,9 +17,3 @@ class Player_Heart_Manager:
             heart = Heart(x_position, y_position)
             heart.draw(screen)
             x_position += 30    
-
-    def extra_heart(self):
-        goal = 1000
-        if self.points > goal:
-            self.heart_count += 1
-            goal += 1000 
