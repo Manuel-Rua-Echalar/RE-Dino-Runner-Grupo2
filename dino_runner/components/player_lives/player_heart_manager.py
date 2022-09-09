@@ -14,5 +14,10 @@ class Player_Heart_Manager:
         for counter in range(self.heart_count):
             heart = Heart(x_position, y_position)
             heart.draw(screen)
-            x_position += 30
+            x_position += 30    
 
+    def extra_heart(self):
+        goal = 1000
+        if self.points > goal:
+            self.heart_count += 1
+            goal += 1000 

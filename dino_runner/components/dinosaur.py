@@ -1,12 +1,13 @@
 from mimetypes import init
 import pygame
 from signal import default_int_handler
-from dino_runner.utils.constants import RUNNING, JUMPING
+from dino_runner.utils.constants import RUNNING, JUMPING, DUCKING
 
 class Dinosaur():
     X_POS = 80
     Y_POS = 310
     JUMP_VEL  = 8.5
+    Y_POS_DUCK = 340
 
     def __init__(self) -> None:
         self.image = RUNNING[0]
@@ -23,6 +24,9 @@ class Dinosaur():
 
         self.step_index = 0
         self.jump_vel = self.JUMP_VEL 
+
+        self.has_lives = False
+        self.lives_transition_time = 0    
 
     def update(self, userInput):
         if self.dino_duck:
@@ -63,7 +67,12 @@ class Dinosaur():
         self.step_index += 1    
 
     def duck(self):
-        pass
+        self.image = DUCKING[0] if self.step_index < 5 else DUCKING[1]
+        self.dino_rect = self.image.get_rect()
+        self.dino_rect.x = self.X_POS
+        self.dino_rect.y = self.Y_POS_DUCK
+        self.step_index += 1
+
 
     def jump(self):
         self.image = JUMPING
@@ -72,4 +81,10 @@ class Dinosaur():
             self.jump_vel -= 0.8
         if self.jump_vel < - self.JUMP_VEL:
             self.dino_jump = False
-            self.jump_vel = self.JUMP_VEL       
+            self.jump_vel = self.JUMP_VEL 
+
+    def check_lives(self):
+        if self.has_lives:
+            transition_time = round(((self.lives_transition_time - pygame.time.get_ticks()) / 1000))
+            if transition_time < 0:
+                self.has_lives = False

@@ -1,11 +1,12 @@
 import pygame
 from dino_runner.components.obstaculo import obstacle
+import random
 
 class Bird(obstacle):
     def __init__(self, image):
         self.type = 0
         super().__init__(image, self.type)
-        self.rect.y = 250
+        self.rect.y = random.randint(150,300)
         self.index = 0
 
     def draw(self, SCREEN):
